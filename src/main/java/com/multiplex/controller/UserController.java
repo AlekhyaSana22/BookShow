@@ -12,12 +12,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.multiplex.dto.UserDTO;
-import com.multiplex.entities.User;
 import com.multiplex.exception.UserAlreadyExistsException;
 import com.multiplex.exception.UserNotFoundException;
 import com.multiplex.services.UserServices;
@@ -32,37 +30,37 @@ public class UserController {
 	@GetMapping(value="/usertable")
 	public ResponseEntity<List<UserDTO>> getUsers() throws UserNotFoundException{
 		List<UserDTO> userList=userServices.getUsers();
-		return new ResponseEntity<List<UserDTO>>(userList, HttpStatus.OK);
+		return new ResponseEntity<>(userList, HttpStatus.OK);
 	}
 	
 @PostMapping(value="/usertable")
 	public ResponseEntity<String> addUser(@RequestBody UserDTO user) throws UserAlreadyExistsException{
-		User userId=userServices.addUser(user);
-		return new ResponseEntity<String>("API.INSERT_CREATED", HttpStatus.CREATED);
+		userServices.addUser(user);
+		return new ResponseEntity<>("API.INSERT_CREATED", HttpStatus.CREATED);
 	}
 
 @GetMapping(value="/usertable/{userId}")
 public ResponseEntity<UserDTO> getUserbyId(@PathVariable Integer userId) throws UserNotFoundException{
 	UserDTO user=userServices.getUserById(userId);
-	return new ResponseEntity<UserDTO>(user, HttpStatus.OK);
+	return new ResponseEntity<>(user, HttpStatus.OK);
 }
 
 
 @DeleteMapping(value="/usertable/{userId}")
-public ResponseEntity deleteUserById(@PathVariable Integer userId) throws UserNotFoundException{
+public ResponseEntity<String> deleteUserById(@PathVariable Integer userId) throws UserNotFoundException{
 	userServices.deleteUser(userId);
-	return new ResponseEntity<String>("API.DELETE_SUCCESS", HttpStatus.OK);
+	return new ResponseEntity<>("API.DELETE_SUCCESS", HttpStatus.OK);
 }
 
 
 @GetMapping("/usertable/u/{userName}")
-public ResponseEntity getUserByName(@PathVariable String userName) throws UserNotFoundException{
-	return new ResponseEntity(userServices.getUserByName(userName), HttpStatus.FOUND);
+public ResponseEntity<List> getUserByName(@PathVariable String userName) throws UserNotFoundException{
+	return new ResponseEntity<>(userServices.getUserByName(userName), HttpStatus.FOUND);
 }
 
 @PutMapping(value="/usertable/u/{userId}")
-public ResponseEntity updateUserByEmailId(@PathVariable Integer userId, @RequestBody UserDTO user) throws UserNotFoundException{
+public ResponseEntity<String> updateUserByEmailId(@PathVariable Integer userId, @RequestBody UserDTO user) throws UserNotFoundException{
 	userServices.updateUserByEmailId(userId, user.getEmailId());
-	return new ResponseEntity("Email Updated Successfully", HttpStatus.ACCEPTED);
+	return new ResponseEntity<>("Email Updated Successfully", HttpStatus.ACCEPTED);
 }
 }

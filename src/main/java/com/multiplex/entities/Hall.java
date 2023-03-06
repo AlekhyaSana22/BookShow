@@ -1,19 +1,18 @@
 package com.multiplex.entities;
 
 import java.util.Objects;
+import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
 
 @Entity
 @Table(name="hall")
@@ -21,15 +20,19 @@ public class Hall {
 	@Id
 	@Column(name="hallid")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-private Integer hallId;
-	@OneToOne(cascade = CascadeType.MERGE)
-	@JoinColumn(name="movieId")
-private Movie movie;
-private Integer seatsNo;
+    
+	private Integer hallId;
+	private Integer seatsNo;
+	@ManyToOne
+	@JoinColumn(name="movie_id", referencedColumnName="movie_id")
+	private Movie movie;
 
+	@OneToMany
+	@JoinColumn(name="show_id")
+	private Set<Show> shows;
+	
 	public Hall() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 public Hall(Integer hallId, Movie movie, Integer seatsNo) {
 	super();

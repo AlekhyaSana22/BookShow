@@ -1,17 +1,16 @@
 package com.multiplex.entities;
 
 import java.time.LocalDate;
+
 import java.time.LocalTime;
 import java.util.Objects;
-
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -20,19 +19,25 @@ public class Booking {
 	@Id
 	@Column(name="bookingid")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	
     private Integer bookingId;
-	@OneToOne(cascade = CascadeType.MERGE)
-	@JoinColumn(name="userId", unique = true)
+	@ManyToOne
+	@JoinColumn(name="user_id")
+	
 	private User user;
-	@OneToOne(cascade = CascadeType.MERGE)
-	@JoinColumn(name="showId", unique = true)
+	@ManyToOne
+	@JoinColumn(name="show_id")
+	
+	private Hall hall;
+	@ManyToOne
+	@JoinColumn(name="hall_id")
+	
 	private Show show;
 	private LocalDate date;
 	private LocalTime time;
 
 	public Booking() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 	public Booking(Integer bookingId, User user, Show show, LocalDate date, LocalTime time) {
 		super();
@@ -41,7 +46,6 @@ public class Booking {
 		this.show = show;
 		this.date = date;
 		this.time = time;
-//		this.seatNo = seatNo;
 	}
 	public Integer getBookingId() {
 		return bookingId;

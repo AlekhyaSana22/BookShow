@@ -1,12 +1,15 @@
 package com.multiplex.entities;
 
 import java.util.Objects;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -15,14 +18,17 @@ public class User {
 	@Id
 	@Column(name="userid")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-private Integer userId;
+	
+	private Integer userId;
+	@OneToMany
+	@JoinColumn(name="booking_id")
+	private Set<Booking> bookings;
 private String userName;
 private String phoneNumber;
 private String emailId;
 private String password;
 public User() {
 	super();
-	// TODO Auto-generated constructor stub
 }
 public User(Integer userId, String userName, String phoneNumber, String emailId, String password) {
 	super();

@@ -39,7 +39,6 @@ public class UserServicesImpl implements UserServices{
 	}
 	@Override
 	public User addUser(UserDTO userDto) throws UserAlreadyExistsException{
-		// TODO Auto-generated method stub
 		if(userRepository.findByEmailId(userDto.getEmailId()).isEmpty()) {
 		User userEntity=new User();
 		userEntity.setUserId(userDto.getUserId());
@@ -47,8 +46,7 @@ public class UserServicesImpl implements UserServices{
 		userEntity.setEmailId(userDto.getEmailId());
 		userEntity.setPassword(userDto.getPassword());
 		userEntity.setPhoneNumber(userDto.getPhoneNumber());
-		User user=userRepository.save(userEntity);
-		return user;
+		return userRepository.save(userEntity);
 		}
 		else {
 		throw new UserAlreadyExistsException();
@@ -56,9 +54,8 @@ public class UserServicesImpl implements UserServices{
 	}
 	@Override
 	public UserDTO getUserById(Integer userId) throws UserNotFoundException{
-		// TODO Auto-generated method stub
 		Optional<User> optional = userRepository.findById(userId);
-		User user = optional.orElseThrow(() -> new UserNotFoundException());
+		User user = optional.orElseThrow(UserNotFoundException::new);
 		UserDTO user2=new UserDTO();
 		user2.setUserId(user.getUserId());
 		user2.setUserName(user.getUserName());
@@ -69,9 +66,8 @@ public class UserServicesImpl implements UserServices{
 	}
 	@Override
 	public void deleteUser(Integer userId) throws UserNotFoundException{
-		// TODO Auto-generated method stub
 		Optional<User> optional = userRepository.findById(userId);
-		User user=optional.orElseThrow(() -> new UserNotFoundException());
+		User user=optional.orElseThrow(UserNotFoundException::new);
 		UserDTO user2=new UserDTO();
 		user2.setUserId(user.getUserId());
 		user2.setUserName(user.getUserName());
@@ -82,7 +78,6 @@ public class UserServicesImpl implements UserServices{
 	}
 	@Override
 	public List<UserDTO> getUserByName(String userName) throws UserNotFoundException{
-		// TODO Auto-generated method stub
 		Iterable<User> users = userRepository.findUserByName(userName);
 		List<UserDTO> users2 = new ArrayList<>();
 		users.forEach(user ->{
@@ -101,7 +96,6 @@ return users2;
 	}
 	@Override
 	public void updateUserByEmailId(Integer userId, String emailId) throws UserNotFoundException {
-		// TODO Auto-generated method stub
 		if(userRepository.existsById(userId)) {
 			User user=userRepository.findById(userId).get();
 			user.setEmailId(emailId);
